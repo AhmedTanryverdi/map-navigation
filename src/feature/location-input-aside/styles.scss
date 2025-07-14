@@ -1,0 +1,8 @@
+.locationInputAside {
+	background-color: aqua;
+	& .content {
+		display: flex;
+		flex-direction: column;
+		
+	}
+}
