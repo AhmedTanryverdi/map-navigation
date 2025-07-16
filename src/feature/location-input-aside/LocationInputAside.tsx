@@ -86,12 +86,16 @@ export const LocationInputAside: React.FC = (): React.JSX.Element => {
 			<div className="container">
 				<div className="content">
 					<h2 className="title">Api Yandex Maps</h2>
-					<form onSubmit={(event: any) => event.preventDefault()}>
+					<form
+						onSubmit={(event: any) => event.preventDefault()}
+						className="form"
+					>
 						<label htmlFor="from">
 							<input
 								type="text"
 								name="fromAddress"
 								id="from"
+								className="input"
 								value={routeData.fromAddress}
 								onChange={handleChange}
 								placeholder="Откуда?"
@@ -102,12 +106,13 @@ export const LocationInputAside: React.FC = (): React.JSX.Element => {
 								type="text"
 								name="toAddress"
 								id="to"
+								className="input"
 								value={routeData.toAddress}
 								onChange={handleChange}
 								placeholder="Куда?"
 							/>
 						</label>
-						<button type="submit" onClick={() => buildRoute()}>
+						<button type="submit" onClick={() => buildRoute()} className="formBtn">
 							Построить маршрут
 						</button>
 					</form>
