@@ -1,8 +1,28 @@
 .locationInputAside {
-	background-color: aqua;
+	max-width: 405px;
+	width: 100%;
+	background-color: rgba(184, 178, 178, 0.6);
 	& .content {
 		display: flex;
 		flex-direction: column;
-		
+		row-gap: 10px;
+		padding: 15px 30px;
+
+		.form {
+			display: flex;
+			flex-direction: column;
+			row-gap: 10px;
+
+			.input {
+				width: 100%;
+				height: 30px;
+				padding: 8px 12px;
+			}
+
+			.formBtn{
+				width: 50%;
+				height: 30px;
+			}
+		}
 	}
 }
