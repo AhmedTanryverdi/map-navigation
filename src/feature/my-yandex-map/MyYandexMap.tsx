@@ -1,15 +1,10 @@
 import React, { useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
-import { RootState, RouteDataType } from "../../shared/utils/types";
 import "./styles.scss";
 
 export let map: any = null;
 
 export const MyYandexMap: React.FC = (): React.JSX.Element => {
 	const mapRef = useRef<HTMLDivElement>(null);
-	const routeData = useSelector<RootState, RouteDataType>(
-		(state) => state.routeData
-	);
 
 	useEffect(() => {
 		//@ts-ignore
