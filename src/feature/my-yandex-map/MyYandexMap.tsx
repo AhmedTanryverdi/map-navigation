@@ -1,69 +1,69 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
+import { RootState, RouteDataType } from "../../shared/utils/types";
 import "./styles.scss";
 
-let map: any;
+const cityCenters: any = {
+	Москва: [55.7558, 37.6173],
+	Тверь: [56.8586, 35.9008],
+};
+
+export let map: any = null;
 
 export const MyYandexMap: React.FC = (): React.JSX.Element => {
 	const mapRef = useRef<HTMLDivElement>(null);
+	const routeData = useSelector<RootState, RouteDataType>(
+		(state) => state.routeData
+	);
 
 	useEffect(() => {
 		//@ts-ignore
 		if (typeof window.ymaps !== "undefined" && mapRef.current != null) {
 			//@ts-ignore
 			window.ymaps.ready(async () => {
-				try {
+				if (
 					//@ts-ignore
-					const result = await window.ymaps.geolocation.get({
-						provider: "browser",
-					});
-					const userLocation = result.geoObjects
-						.get(0)
-						?.geometry?.getCoordinates();
-
-					let coordsToUse = Array.isArray(userLocation)
-						? userLocation
-						: [55.75, 37.6];
-
-					//@ts-ignore
-					map = new ymaps.Map(mapRef.current, {
-						center: coordsToUse,
-						zoom: 9,
-					});
-
-					const customIconOptions = {
-						iconLayout: "default#image",
-						iconImageHref: "../../../public/icon-map-mark.png",
-						iconImageSize: [32, 32],
-						iconImageOffset: [-16, -32],
-					};
-
-					//@ts-ignore
-					const placemark = new ymaps.Placemark(
-						coordsToUse,
-						{},
-						customIconOptions
-					);
-					map.geoObjects.add(placemark);
-
-					const moscowCoords = [55.75, 37.6];
-
-					//@ts-ignore
-					const multiRoute = new window.ymaps.multiRouter.MultiRoute(
-						{
-							referencePoints: [moscowCoords, coordsToUse],
-						},
-						{}
-					);
-
-					map.geoObjects.add(multiRoute);
-
-					multiRoute.model.events.add("change", () => {
-						map.setBounds(multiRoute.properties.get("boundedBy"), {
-							checkZoomRange: true,
+					typeof window.ymaps !== "undefined" &&
+					mapRef.current != null
+				) {
+					try {
+						//@ts-ignore
+						const result = await window.ymaps.geolocation.get({
+							provider: "browser",
 						});
-					});
-				} catch (err) {
-					console.error("Ошибка при создании карты:", err);
+						const userLocation = result.geoObjects
+							.get(0)
+							?.geometry?.getCoordinates();
+
+						let coordsToUse = Array.isArray(userLocation)
+							? userLocation
+							: [55.75, 37.6];
+
+						if (!map) {
+							//@ts-ignore
+							map = new ymaps.Map(mapRef.current, {
+								center: coordsToUse, // Начальная точка — центр Москвы
+								zoom: 9,
+							});
+						}
+
+						const customIconOptions = {
+							iconLayout: "default#image",
+							iconImageHref: "../../../public/icon-map-mark.png",
+							iconImageSize: [32, 32],
+							iconImageOffset: [-16, -32],
+						};
+
+						//@ts-ignore
+						const placemark = new ymaps.Placemark(
+							coordsToUse,
+							{},
+							customIconOptions
+						);
+						map.geoObjects.add(placemark);
+					} catch (err) {
+						console.error("Ошибка при инициализации карты:", err);
+					}
 				}
 			});
 		}
