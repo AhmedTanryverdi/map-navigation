@@ -3,11 +3,6 @@ import { useSelector } from "react-redux";
 import { RootState, RouteDataType } from "../../shared/utils/types";
 import "./styles.scss";
 
-const cityCenters: any = {
-	Москва: [55.7558, 37.6173],
-	Тверь: [56.8586, 35.9008],
-};
-
 export let map: any = null;
 
 export const MyYandexMap: React.FC = (): React.JSX.Element => {
