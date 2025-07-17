@@ -10,10 +10,6 @@
 		.openBlockBtn{
 			transform: rotate(180deg);
 		}
-
-		& ~ .yandex-map {
-			flex-basis: 100%!important; /* при закрытой панели карта занимает всю ширину */
-		  }
 	}
 
 	& .content {
@@ -25,7 +21,7 @@
 		.openBlockBtn {
 			position: absolute;
 			right: 0px;
-			top: 0px;
+			top: 5px;
 			font-size: 28px;
 			font-weight: 600;
 			width: 40px;
