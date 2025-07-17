@@ -84,51 +84,49 @@ export const LocationInputAside: React.FC = (): React.JSX.Element => {
 
 	return (
 		<div className="locationInputAside" data-open={isOpen}>
-			<div className="container">
-				<div className="content">
+			<div className="content">
+				<button
+					type="button"
+					className="openBlockBtn"
+					onClick={() => setIsOpen(!isOpen)}
+				>
+					{"<"}
+				</button>
+				<h2 className="title">Api Yandex Maps</h2>
+				<form
+					onSubmit={(event: any) => event.preventDefault()}
+					className="form"
+				>
+					<label htmlFor="from">
+						<input
+							type="text"
+							name="fromAddress"
+							id="from"
+							className="input"
+							value={routeData.fromAddress}
+							onChange={handleChange}
+							placeholder="Откуда?"
+						/>
+					</label>
+					<label htmlFor="to">
+						<input
+							type="text"
+							name="toAddress"
+							id="to"
+							className="input"
+							value={routeData.toAddress}
+							onChange={handleChange}
+							placeholder="Куда?"
+						/>
+					</label>
 					<button
-						type="button"
-						className="openBlockBtn"
-						onClick={() => setIsOpen(!isOpen)}
+						type="submit"
+						onClick={() => buildRoute()}
+						className="formBtn"
 					>
-						{"<"}
+						Построить маршрут
 					</button>
-					<h2 className="title">Api Yandex Maps</h2>
-					<form
-						onSubmit={(event: any) => event.preventDefault()}
-						className="form"
-					>
-						<label htmlFor="from">
-							<input
-								type="text"
-								name="fromAddress"
-								id="from"
-								className="input"
-								value={routeData.fromAddress}
-								onChange={handleChange}
-								placeholder="Откуда?"
-							/>
-						</label>
-						<label htmlFor="to">
-							<input
-								type="text"
-								name="toAddress"
-								id="to"
-								className="input"
-								value={routeData.toAddress}
-								onChange={handleChange}
-								placeholder="Куда?"
-							/>
-						</label>
-						<button
-							type="submit"
-							onClick={() => buildRoute()}
-							className="formBtn"
-						>
-							Построить маршрут
-						</button>
-					</form>
-				</div>
+				</form>
 			</div>
 		</div>
 	);
