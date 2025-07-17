@@ -1,13 +1,39 @@
 .locationInputAside {
 	max-width: 405px;
 	width: 100%;
+	position: relative;
 	background-color: rgba(184, 178, 178, 0.6);
+	left: 0;
+	transition: 0.5s;
+	&[data-open="false"] {
+		left: -365px;
+		.openBlockBtn{
+			transform: rotate(180deg);
+		}
+
+		& ~ .yandex-map {
+			flex-basis: 100%!important; /* при закрытой панели карта занимает всю ширину */
+		  }
+	}
+
 	& .content {
 		display: flex;
 		flex-direction: column;
 		row-gap: 10px;
-		padding: 15px 30px;
+		padding: 25px 40px;
+		position: relative;
+		.openBlockBtn {
+			position: absolute;
+			right: 0px;
+			top: 0px;
+			font-size: 28px;
+			font-weight: 600;
+			width: 40px;
+		}
 
+		.title {
+			margin-top: 30px;
+		}
 		.form {
 			display: flex;
 			flex-direction: column;
@@ -19,7 +45,7 @@
 				padding: 8px 12px;
 			}
 
-			.formBtn{
+			.formBtn {
 				width: 50%;
 				height: 30px;
 			}
