@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import {
 	RootState,
@@ -10,6 +10,7 @@ import { map } from "../my-yandex-map/MyYandexMap";
 import "./styles.scss";
 
 export const LocationInputAside: React.FC = (): React.JSX.Element => {
+	const [isOpen, setIsOpen] = useState(true);
 	const dispatch = useAppDispatch();
 	const routeData = useSelector<RootState, RouteDataType>(
 		(state) => state.routeData
@@ -82,9 +83,16 @@ export const LocationInputAside: React.FC = (): React.JSX.Element => {
 	};
 
 	return (
-		<div className="locationInputAside">
+		<div className="locationInputAside" data-open={isOpen}>
 			<div className="container">
 				<div className="content">
+					<button
+						type="button"
+						className="openBlockBtn"
+						onClick={() => setIsOpen(!isOpen)}
+					>
+						{"<"}
+					</button>
 					<h2 className="title">Api Yandex Maps</h2>
 					<form
 						onSubmit={(event: any) => event.preventDefault()}
@@ -112,7 +120,11 @@ export const LocationInputAside: React.FC = (): React.JSX.Element => {
 								placeholder="Куда?"
 							/>
 						</label>
-						<button type="submit" onClick={() => buildRoute()} className="formBtn">
+						<button
+							type="submit"
+							onClick={() => buildRoute()}
+							className="formBtn"
+						>
 							Построить маршрут
 						</button>
 					</form>
