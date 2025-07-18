@@ -7,6 +7,7 @@ import {
 } from "../../shared/utils/types";
 import { setRouteData } from "../slices/routeSlice";
 import { map } from "../my-yandex-map/MyYandexMap";
+import { GeoObjectCollection, IPointGeometry } from "yandex-maps";
 import "./styles.scss";
 
 export const LocationInputAside: React.FC = (): React.JSX.Element => {
@@ -21,9 +22,9 @@ export const LocationInputAside: React.FC = (): React.JSX.Element => {
 		dispatch(setRouteData({ [name]: value }));
 	};
 
-	const geoObjectCollectionRef =
-		//@ts-ignore
-		React.useRef<ymaps.GeoObjectCollection | null>(null);
+	const geoObjectCollectionRef = React.useRef<GeoObjectCollection | null>(
+		null
+	);
 	const clearOldRoute = () => {
 		if (geoObjectCollectionRef.current !== null) {
 			geoObjectCollectionRef.current.removeAll();
@@ -33,39 +34,36 @@ export const LocationInputAside: React.FC = (): React.JSX.Element => {
 	const buildRoute = async () => {
 		clearOldRoute();
 
-		//@ts-ignore
 		if (!map || typeof window.ymaps === "undefined") return;
 
 		try {
-			//@ts-ignore
 			const geocoderResultFrom = await window.ymaps.geocode(
 				routeData.fromAddress
 			);
 
-			//@ts-ignore
 			const geocoderResultTo = await window.ymaps.geocode(
 				routeData.toAddress
 			);
 
-			const firstPoint = geocoderResultFrom.geoObjects
-				.get(0)
-				.geometry.getCoordinates();
+			const firstPoint = (
+				geocoderResultFrom.geoObjects?.get(0).geometry as IPointGeometry
+			)?.getCoordinates();
 
-			const secondPoint = geocoderResultTo.geoObjects
-				.get(0)
-				.geometry.getCoordinates();
+			const secondPoint = (
+				geocoderResultTo.geoObjects?.get(0).geometry as IPointGeometry
+			)?.getCoordinates();
 
-			const multiRoute =
-				//@ts-ignore
-				new window.ymaps.multiRouter.MultiRoute(
-					{
-						referencePoints: [firstPoint, secondPoint],
-					},
-					{}
-				);
+			if (!firstPoint || !secondPoint) return;
+
+			const multiRoute = new window.ymaps.multiRouter.MultiRoute(
+				{
+					referencePoints: [firstPoint, secondPoint],
+					params: {},
+				},
+				{}
+			);
 
 			// Создаем новую коллекцию и добавляем туда маршрут
-			//@ts-ignore
 			geoObjectCollectionRef.current = new ymaps.GeoObjectCollection();
 			geoObjectCollectionRef.current.add(multiRoute);
 
@@ -73,7 +71,7 @@ export const LocationInputAside: React.FC = (): React.JSX.Element => {
 			map.geoObjects.add(geoObjectCollectionRef.current);
 
 			multiRoute.model.events.add("change", () => {
-				map.setBounds(multiRoute.properties.get("boundedBy"), {
+				map.setBounds(multiRoute.properties.get("boundedBy", []), {
 					checkZoomRange: true,
 				});
 			});

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { IPointGeometry } from "yandex-maps";
 import "./styles.scss";
 
 export let map: any = null;
@@ -7,32 +8,27 @@ export const MyYandexMap: React.FC = (): React.JSX.Element => {
 	const mapRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		//@ts-ignore
 		if (typeof window.ymaps !== "undefined" && mapRef.current != null) {
-			//@ts-ignore
 			window.ymaps.ready(async () => {
 				if (
-					//@ts-ignore
 					typeof window.ymaps !== "undefined" &&
 					mapRef.current != null
 				) {
 					try {
-						//@ts-ignore
 						const result = await window.ymaps.geolocation.get({
 							provider: "browser",
 						});
-						const userLocation = result.geoObjects
-							.get(0)
-							?.geometry?.getCoordinates();
+						const userLocation = (
+							result.geoObjects.get(0)?.geometry as IPointGeometry
+						)?.getCoordinates();
 
 						let coordsToUse = Array.isArray(userLocation)
 							? userLocation
 							: [55.75, 37.6];
 
 						if (!map) {
-							//@ts-ignore
 							map = new ymaps.Map(mapRef.current, {
-								center: coordsToUse, // Начальная точка — центр Москвы
+								center: coordsToUse,
 								zoom: 9,
 							});
 						}
@@ -44,7 +40,6 @@ export const MyYandexMap: React.FC = (): React.JSX.Element => {
 							iconImageOffset: [-16, -32],
 						};
 
-						//@ts-ignore
 						const placemark = new ymaps.Placemark(
 							coordsToUse,
 							{},
