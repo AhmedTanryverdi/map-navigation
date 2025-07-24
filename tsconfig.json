@@ -17,8 +17,12 @@
 		"jsx": "react-jsx",
 		"typeRoots": [
 			"node_modules/@types",
-			"src/shared/utils" // сюда помещаете файл с декларациями
-		  ]
+			"src/shared/types/@types/" // сюда помещаете файл с декларациями
+		],
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["src/*"]
+		}
 	},
 	"include": ["src"]
 }
